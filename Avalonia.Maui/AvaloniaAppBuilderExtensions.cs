@@ -78,6 +78,7 @@ public static class AvaloniaAppBuilderExtensions
                 Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnCurrentThread();
 
                 var desktop = new Microsoft.UI.Xaml.Hosting.DesktopWindowXamlSource();
+
                 //Microsoft.UI.Xaml.Hosting.WindowsXamlManager.InitializeForCurrentThread();
 
                 WinUIWindow = new MauiWinUIWindow();
