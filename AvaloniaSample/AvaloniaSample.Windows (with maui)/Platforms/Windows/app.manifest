@@ -18,7 +18,7 @@
 
       <!-- Windows 8.1 -->
       <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
-
+      <maxversiontested Id="10.0.18362.0"/>
       <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/>
       <!-- Windows 10 -->
       <supportedOS Id="{4fa3f223-1dc3-4e56-919d-7f202379c42b}"/>

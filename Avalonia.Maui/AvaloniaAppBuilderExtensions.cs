@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -51,7 +52,7 @@ public static class AvaloniaAppBuilderExtensions
     public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, Action<MauiAppBuilder>? configure = null)
         where TMauiApplication : Microsoft.Maui.Controls.Application
 #else
-    public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, Action<MauiAppBuilder>? configure  = null)
+    public static AppBuilder UseMaui<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TMauiApplication>(this AppBuilder appBuilder, Action<MauiAppBuilder>? configure  = null)
         where TMauiApplication : Microsoft.Maui.Controls.Application
 #endif
     {
@@ -76,8 +77,8 @@ public static class AvaloniaAppBuilderExtensions
 
                 Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnCurrentThread();
 
-
-                Microsoft.UI.Xaml.Hosting.WindowsXamlManager.InitializeForCurrentThread();
+                var desktop = new Microsoft.UI.Xaml.Hosting.DesktopWindowXamlSource();
+                //Microsoft.UI.Xaml.Hosting.WindowsXamlManager.InitializeForCurrentThread();
 
                 WinUIWindow = new MauiWinUIWindow();
                 

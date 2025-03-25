@@ -10,6 +10,7 @@ using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Platform;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ContentView = Microsoft.Maui.Controls.ContentView;
 
 namespace Avalonia.Maui.Controls;
@@ -77,10 +78,13 @@ public class MauiControlHost : NativeControlHost
         return new iOS.UIViewControlHandle(native);
 #endif
 #elif WINDOWS10_0_19041_0_OR_GREATER
-        var app = Microsoft.Maui.Controls.Application.Current;
 
-        var pageHandler = new ContentViewHandler();
-        pageHandler.SetMauiContext(app?.Handler?.MauiContext ?? AvaloniaAppBuilderExtensions.Context);
+        return MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            var app = Microsoft.Maui.Controls.Application.Current;
+
+            var pageHandler = new ContentViewHandler();
+            pageHandler.SetMauiContext(app?.Handler?.MauiContext ?? AvaloniaAppBuilderExtensions.Context);
 
             _page = new ContentView
             {
@@ -96,16 +100,44 @@ public class MauiControlHost : NativeControlHost
             window.AppWindow.SetPresenter(Microsoft.UI.Windowing.AppWindowPresenterKind.FullScreen);
             window.Content = _page.ToPlatform(app?.Handler?.MauiContext ?? AvaloniaAppBuilderExtensions.Context);
 
-        if (window.Content is Microsoft.UI.Xaml.FrameworkElement rootElement)
-        {
-            rootElement.RequestedTheme = (PlatformThemeVariant?)Avalonia.Application.Current.ActualThemeVariant == PlatformThemeVariant.Dark
-                ? Microsoft.UI.Xaml.ElementTheme.Dark
-                : Microsoft.UI.Xaml.ElementTheme.Light;
-        }
+            if (window.Content is Microsoft.UI.Xaml.FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = (PlatformThemeVariant?)Avalonia.Application.Current.ActualThemeVariant == PlatformThemeVariant.Dark
+                    ? Microsoft.UI.Xaml.ElementTheme.Dark
+                    : Microsoft.UI.Xaml.ElementTheme.Light;
+            }
 
-        window.Activate();
+            window.Activate();
+
+            //var titleBar = window.AppWindow.TitleBar;
+            //titleBar.ExtendsContentIntoTitleBar = true;
+            //titleBar.ButtonBackgroundColor = Microsoft.UI.Colors.Transparent;
+            //titleBar.ButtonInactiveBackgroundColor = Microsoft.UI.Colors.Transparent;
+            //titleBar.ForegroundColor = Microsoft.UI.Colors.White; // Or match your theme
+
+            //var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(window.AppWindow.Id, Microsoft.UI.Windowing.DisplayAreaFallback.Nearest);
+            //if (displayArea != null)
+            //{
+            //    var bounds = displayArea.WorkArea;
+            //    window.AppWindow.MoveAndResize(bounds);
+            //}
+
+            //window.ExtendsContentIntoTitleBar = true;
+            //var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            //var id = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
+            //var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
+            //switch (appWindow.Presenter)
+            //{
+            //    case Microsoft.UI.Windowing.OverlappedPresenter overlappedPresenter:
+            //        overlappedPresenter.SetBorderAndTitleBar(false, false);
+            //        overlappedPresenter.Maximize();
+            //        break;
+            //}
+
+           
 
             return new PlatformHandle(window.WindowHandle, "HWMD");
+        }).Result;
 #else
         return base.CreateNativeControlCore(parent);
 #endif
