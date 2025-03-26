@@ -2,8 +2,8 @@
   <PropertyGroup>
     <AvaloniaVersion>11.2.5</AvaloniaVersion>
     <AvaloniaSamplesVersion>11.2.5</AvaloniaSamplesVersion>
-    <MauiVersion>8.0.91</MauiVersion>
-    <MauiSamplesVersion>8.0.91</MauiSamplesVersion>
+    <MauiVersion>8.0.100</MauiVersion>
+    <MauiSamplesVersion>8.0.100</MauiSamplesVersion>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
